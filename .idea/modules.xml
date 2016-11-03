@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NORT.iml" filepath="$PROJECT_DIR$/NORT.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TRON.iml" filepath="$PROJECT_DIR$/TRON.iml" />
     </modules>
   </component>
 </project>

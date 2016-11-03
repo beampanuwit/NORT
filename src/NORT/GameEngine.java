@@ -1,30 +1,27 @@
-package TRON;
+package NORT;
 
 import org.newdawn.slick.*;
 
-public class Tron extends BasicGame{
+public class GameEngine extends BasicGame{
     float x = 400;
     float y = 300;
     char aswd = '\0';
     Image car = null;
 
-    public Tron(String title) {
+    public GameEngine(String title) {
         super(title);
     }
 
     public void init(GameContainer contain) throws SlickException {
-        car = new Image("picture/carl.png");
     }
 
     public void update(GameContainer contain, int i) throws SlickException {
         Input input = contain.getInput();
         if (input.isKeyDown(Input.KEY_A)) {
             aswd = 'a';
-            car = new Image("picture/carl.png");
         }
         if (input.isKeyDown(Input.KEY_D)) {
             aswd = 'd';
-            car = new Image("picture/carr.png");
         }
         if (input.isKeyDown(Input.KEY_W)) {
             aswd = 'w';
@@ -54,11 +51,12 @@ public class Tron extends BasicGame{
     }
 
     public void render(GameContainer contain, Graphics g) throws SlickException {
-        car.draw(x,y);
+        g.fillRect(x,y,5,5);
+        g.drawRect(x,y,5,5);
     }
 
     public static void main(String[] args) throws SlickException {
-        AppGameContainer tron = new AppGameContainer(new Tron("TRON"));
+        AppGameContainer tron = new AppGameContainer(new GameEngine("NORT"));
 
         tron.setDisplayMode(800,600,false);
 
