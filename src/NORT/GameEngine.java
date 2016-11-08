@@ -1,6 +1,7 @@
 package NORT;
 
 import org.newdawn.slick.*;
+
 import java.util.ArrayList;
 
 public class GameEngine extends BasicGame{
@@ -111,6 +112,8 @@ public class GameEngine extends BasicGame{
     }
 
     public void render(GameContainer contain, Graphics g) throws SlickException {
+        User player1 = new User();
+
         g.setColor(new Color(255,255,255));
         for(int i = 0; i < arrx1.size(); i++){
             g.fillRect((float) arrx1.get(i),(float) arry1.get(i),5,5);

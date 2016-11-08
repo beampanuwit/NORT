@@ -1,7 +1,0 @@
-hello
-User:Jo
-HBD
-SUCCESS
-User:John
-...
-SUCCESS

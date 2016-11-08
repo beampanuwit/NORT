@@ -1,53 +1,114 @@
 package NORT;
 
-/**
- * Created by Supakarn on 11/5/2016.
- */
-
 import java.io.*;
+import java.util.ArrayList;
 
-public class User {
-    static File file = new File("bin\\user.txt");
-    static String line;
+/**
+ * Created by Supakarn on 11/6/2016.
+ */
+public class User implements GameUser {
+    private String username;        //after logged in can use this.username
+    private String password;        //after logged in can use this.password
+    private ArrayList<Bike> ownedBike = new ArrayList<>(50);    //bike that player have
+    private static RandomAccessFile fileStore;
 
-    public static void main(String[] args) {
-        userImport("John","123");
-        userImport("John","...");
-        userImport("J","hello");
-        userImport("Jo","HBD");
-
+    public User(){
+        username = "Anonymous";
+        password = "";
     }
 
-    public static void userImport(String username, String password){
+    @Override
+    public void createUser(String username,String password){
+        if(!existUsername(username)){
+            setUser(username);
+            writeDat(password,0,username);       //write password
+            System.out.println("Sign up completed.");
+        }else System.out.println("Username already taken.");
+    }
+    @Override
+    public boolean userLogin(String username,String password){
+        if (!existUsername(username)) {
+            System.out.println("User not found!");
+            return false;
+        }
+        if(checkPassword(username,password)){
+            System.out.println("Login successful!");
+            setUsername(username);
+            setPassword(password);
+            return true;                                //access the game from this function
+        }else {
+            System.out.println("Wrong password!");
+            return false;
+        }
+    }
+
+    @Override
+    public String getUsername(){
+        return this.username;
+    }
+    @Override
+    public String getPassword(){
+        return this.password;
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+
+    //----------------------------------------------------------------------------------------------------//
+
+    public boolean existUsername(String username){
+        File f = new File("bin\\"+ username +".dat");
+        if (f.exists()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean checkPassword(String username,String password){
+        if(readDat(0,username).equals(password)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public void setUser(String username){
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            while ((line = br.readLine()) != null) {
-                if(line.equals("User:"+username)){
-                    if(passCheck(password,br.readLine())){
-                        System.out.println(br.readLine());
-                    }else {
-                        System.out.println("Wrong Password!");
-                    }
-                    break;
-                }
-            }
-            if(line == null){
-                System.out.println("User Not Found!");
-            }
-            br.close();
-        } catch (IOException e) {
-            System.out.println(e);
+            fileStore = new RandomAccessFile("bin\\"+ username +".dat","rw");
+            fileStore.close();
+        }catch (IOException e){
             e.printStackTrace();
         }
     }
 
-
-    public static boolean passCheck(String passcode, String password){
-        if(passcode.equals(password)){
-            return true;
-        }else return false;
+    public void writeDat(String text,int position,String username){
+        try {
+            fileStore = new RandomAccessFile("bin\\"+ username +".dat","rw");
+            fileStore.seek(position);
+            fileStore.writeUTF(text);
+            fileStore.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
-
+    public String readDat(int position,String username){
+        String temp = null;
+        try {
+            fileStore = new RandomAccessFile("bin\\"+ username +".dat","r");
+            fileStore.seek(position);
+            temp = fileStore.readUTF();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return temp;
+    }
 
 }
